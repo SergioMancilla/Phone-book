@@ -1,0 +1,28 @@
+contact_type
+  id
+  name
+
+contact
+  id
+  name
+  phone_number
+  text_comments
+  contact_type_id FK (contact_type)
+
+private_organization_contact
+  id
+  office_address
+  fax
+  contact_id FK (contact)
+
+public_organization_contact
+  id
+  webpage_url
+  indistrial_sector
+  contact_id FK (contact)
+
+person_contact
+  id
+  relationship
+  email
+  contact_id FK (contact)
