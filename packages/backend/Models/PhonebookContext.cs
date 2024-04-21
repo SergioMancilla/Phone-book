@@ -6,6 +6,10 @@ namespace backend.Models;
 
 public partial class PhonebookContext : DbContext
 {
+    public PhonebookContext()
+    {
+    }
+
     public PhonebookContext(DbContextOptions<PhonebookContext> options)
         : base(options)
     {
@@ -21,6 +25,7 @@ public partial class PhonebookContext : DbContext
 
     public virtual DbSet<PublicOrganizationContact> PublicOrganizationContacts { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -119,6 +124,30 @@ public partial class PhonebookContext : DbContext
                 .HasForeignKey(d => d.ContactId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("public_organization_contact_contact_id_fkey");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("users_pkey");
+
+            entity.ToTable("users");
+
+            entity.HasIndex(e => e.Email, "users_email_key").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .HasColumnName("email");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .HasColumnName("name");
+            entity.Property(e => e.Password)
+                .HasMaxLength(100)
+                .HasColumnName("password");
         });
 
         OnModelCreatingPartial(modelBuilder);
