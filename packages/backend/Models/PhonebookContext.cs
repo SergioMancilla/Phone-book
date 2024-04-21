@@ -47,7 +47,7 @@ public partial class PhonebookContext : DbContext
 
             entity.HasOne(d => d.ContactType).WithMany(p => p.Contacts)
                 .HasForeignKey(d => d.ContactTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("contact_contact_type_id_fkey");
         });
 
@@ -69,6 +69,8 @@ public partial class PhonebookContext : DbContext
 
             entity.ToTable("person_contact");
 
+            entity.HasIndex(e => e.ContactId, "person_contact_contact_id_key").IsUnique();
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ContactId).HasColumnName("contact_id");
             entity.Property(e => e.Email)
@@ -78,8 +80,8 @@ public partial class PhonebookContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("relationship");
 
-            entity.HasOne(d => d.Contact).WithMany(p => p.PersonContacts)
-                .HasForeignKey(d => d.ContactId)
+            entity.HasOne(d => d.Contact).WithOne(p => p.PersonContact)
+                .HasForeignKey<PersonContact>(d => d.ContactId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("person_contact_contact_id_fkey");
         });
@@ -90,6 +92,8 @@ public partial class PhonebookContext : DbContext
 
             entity.ToTable("private_organization_contact");
 
+            entity.HasIndex(e => e.ContactId, "private_organization_contact_contact_id_key").IsUnique();
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ContactId).HasColumnName("contact_id");
             entity.Property(e => e.Fax)
@@ -99,8 +103,8 @@ public partial class PhonebookContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("office_address");
 
-            entity.HasOne(d => d.Contact).WithMany(p => p.PrivateOrganizationContacts)
-                .HasForeignKey(d => d.ContactId)
+            entity.HasOne(d => d.Contact).WithOne(p => p.PrivateOrganizationContact)
+                .HasForeignKey<PrivateOrganizationContact>(d => d.ContactId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("private_organization_contact_contact_id_fkey");
         });
@@ -111,6 +115,8 @@ public partial class PhonebookContext : DbContext
 
             entity.ToTable("public_organization_contact");
 
+            entity.HasIndex(e => e.ContactId, "public_organization_contact_contact_id_key").IsUnique();
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ContactId).HasColumnName("contact_id");
             entity.Property(e => e.IndustrialSector)
@@ -120,8 +126,8 @@ public partial class PhonebookContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("webpage_url");
 
-            entity.HasOne(d => d.Contact).WithMany(p => p.PublicOrganizationContacts)
-                .HasForeignKey(d => d.ContactId)
+            entity.HasOne(d => d.Contact).WithOne(p => p.PublicOrganizationContact)
+                .HasForeignKey<PublicOrganizationContact>(d => d.ContactId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("public_organization_contact_contact_id_fkey");
         });
