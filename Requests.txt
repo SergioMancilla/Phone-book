@@ -1,0 +1,33 @@
+[POST]
+[
+  {
+    name
+    phone_number
+    text_comments
+    contact_type_id
+    additional_data: {
+      office_address (optional)
+      fax (optional)
+      webpage_url (optional)
+      industrial_sector (optional)
+      relationship (optional)
+      email (optional)
+    }
+  }
+]
+
+[GET]
+{
+  name
+  phone_number
+  text_comments
+  contact_type_id
+  additional_data: {
+    office_address (optional)
+    fax (optional)
+    webpage_url (optional)
+    industrial_sector (optional)
+    relationship (optional)
+    email (optional)
+  }
+}

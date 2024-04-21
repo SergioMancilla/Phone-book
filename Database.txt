@@ -26,3 +26,10 @@ person_contact
   relationship
   email
   contact_id FK (contact)
+
+user
+  id
+  name
+  email
+  password
+  created_at
