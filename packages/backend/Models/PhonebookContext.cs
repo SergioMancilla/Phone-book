@@ -82,7 +82,7 @@ public partial class PhonebookContext : DbContext
 
             entity.HasOne(d => d.Contact).WithOne(p => p.PersonContact)
                 .HasForeignKey<PersonContact>(d => d.ContactId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("person_contact_contact_id_fkey");
         });
 
@@ -105,7 +105,7 @@ public partial class PhonebookContext : DbContext
 
             entity.HasOne(d => d.Contact).WithOne(p => p.PrivateOrganizationContact)
                 .HasForeignKey<PrivateOrganizationContact>(d => d.ContactId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("private_organization_contact_contact_id_fkey");
         });
 
@@ -128,7 +128,7 @@ public partial class PhonebookContext : DbContext
 
             entity.HasOne(d => d.Contact).WithOne(p => p.PublicOrganizationContact)
                 .HasForeignKey<PublicOrganizationContact>(d => d.ContactId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("public_organization_contact_contact_id_fkey");
         });
 

@@ -1,5 +1,6 @@
 using backend.DAL;
 using backend.Models;
+using backend.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<PhonebookContext>(options =>
 });
 
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
+builder.Services.AddScoped<IContactTypeRepository, ContactTypeRepository>();
 
 var app = builder.Build();
 
