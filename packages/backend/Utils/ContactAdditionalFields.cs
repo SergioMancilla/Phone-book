@@ -37,4 +37,26 @@ public class ContactAdditionalFields
         }
     }
 
+    public static ContactDTO ItemToDTO(Contact contact)
+    {
+
+        return new ContactDTO
+        {
+            Id = contact.Id,
+            Name = contact.Name,
+            PhoneNumber = contact.PhoneNumber,
+            TextComments = contact.TextComments ?? string.Empty,
+            ContactTypeId = contact.ContactType?.Id ?? 0,
+            AdditionalData = new AdditionalDataDTO
+            {
+                Email = contact.PersonContact?.Email ?? string.Empty,
+                Relationship = contact.PersonContact?.Relationship ?? string.Empty,
+                IndustrialSector = contact.PublicOrganizationContact?.IndustrialSector ?? string.Empty,
+                WebpageUrl = contact.PublicOrganizationContact?.WebpageUrl ?? string.Empty,
+                Fax = contact.PrivateOrganizationContact?.Fax ?? string.Empty,
+                OfficeAddress = contact.PrivateOrganizationContact?.OfficeAddress ?? string.Empty,
+            }
+        };
+    }
+
 }

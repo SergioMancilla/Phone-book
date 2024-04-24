@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using backend.Models.Enum;
 using Microsoft.AspNetCore.Http.HttpResults;
 using backend.Repository;
+using backend.Utils;
 
 namespace backend.DAL;
 
@@ -17,56 +18,50 @@ public class ContactRepository: BaseRepository, IContactRepository
 
     public ContactRepository(PhonebookContext context) : base(context) { }
 
-    private static ContactDTO ItemToDTO(Contact contact)
-    {
-        return new ContactDTO
-        {
-            Id = contact.Id,
-            Name = contact.Name,
-            PhoneNumber = contact.PhoneNumber,
-            TextComments = contact.TextComments ?? string.Empty,
-            ContactTypeId = contact.ContactType.Id,
-            AdditionalData = new AdditionalDataDTO
-            {
-                Email = contact.PersonContact?.Email,
-                Relationship = contact.PersonContact?.Relationship,
-                IndustrialSector = contact.PublicOrganizationContact?.IndustrialSector,
-                WebpageUrl = contact.PublicOrganizationContact?.WebpageUrl,
-                Fax = contact.PrivateOrganizationContact?.Fax,
-                OfficeAddress = contact.PrivateOrganizationContact?.OfficeAddress,
-            }
-        };
-    }
-
     public async Task<List<ContactDTO>> GetAll()
     {
         List<ContactDTO> contacts = await _context.Contacts
-            .Select(x => ItemToDTO(x))
+            .Where(x => !x.Deleted)
+            .Include(x => x.ContactType)
+            .Include(x => x.PersonContact)
+            .Include(x => x.PublicOrganizationContact)
+            .Include(x => x.PrivateOrganizationContact)
+            .Select(x => ContactAdditionalFields.ItemToDTO(x))
             .ToListAsync();
         return contacts;
     }
 
-    public async Task<Contact?> GetById(int id)
+    public Contact? GetById(int id)
     {
-        return await _context.Contacts.FindAsync(id);
+        return _context.Contacts.Find(id);
     }
 
     public void InsertContact(Contact contact)
     {
         _context.Contacts.Add(contact);
-        Save();
+        _context.SaveChanges();
     }
 
     public void UpdateContact(Contact contact)
     {
+        var privateOrganizationContacts = _context.PrivateOrganizationContacts.Find(contact.Id);
+        var personContact = _context.PersonContacts.Find(contact.Id);
+        var publicOrganizationContacts = _context.PublicOrganizationContacts.Find(contact.Id);
+
+        if (personContact != null) _context.PersonContacts.Remove(personContact);
+        if (privateOrganizationContacts != null) _context.PrivateOrganizationContacts.Remove(privateOrganizationContacts);
+        if (publicOrganizationContacts != null) _context.PublicOrganizationContacts.Remove(publicOrganizationContacts);
+
         _context.Entry(contact).State = EntityState.Modified;
-        Save();
+        Console.WriteLine(contact);
+        _context.Contacts.Update(contact);
+        _context.SaveChanges();
     }
 
     public void DeleteContact(Contact contact)
     {
-        _context.Contacts.Remove(contact);
-        Save();
+        contact.Deleted = true;
+        _context.SaveChanges();
     }
 
 }

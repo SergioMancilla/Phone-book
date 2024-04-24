@@ -15,6 +15,8 @@ public partial class Contact
 
     public int ContactTypeId { get; set; }
 
+    public bool Deleted { get; set; }
+
     public virtual ContactType ContactType { get; set; } = null!;
 
     public virtual PersonContact? PersonContact { get; set; }

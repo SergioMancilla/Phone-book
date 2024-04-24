@@ -7,7 +7,7 @@ public partial class PrivateOrganizationContact
 {
     public int Id { get; set; }
 
-    public string OfficeAddress { get; set; } = null!;
+    public string? OfficeAddress { get; set; }
 
     public string? Fax { get; set; }
 

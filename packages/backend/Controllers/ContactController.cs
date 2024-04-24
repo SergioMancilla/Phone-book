@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend.Utils;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
+using Microsoft.AspNetCore.Cors;
 
 namespace backend.Controllers;
 
@@ -54,6 +55,7 @@ public class ContactController : ControllerBase
         try
         {
             _contactRepository.InsertContact(contact);
+            contactDto.Id = contact.Id;
             return CreatedAtAction(nameof(Post), new { id = contactDto.Id }, contactDto);
         }
         catch (Exception ex)
@@ -67,13 +69,14 @@ public class ContactController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<ContactDTO>> Put(int id, ContactDTO contactDto)
     {
+        contactDto.Id = id;
         var contactType = await _contactTypeRepository.GetById(contactDto.ContactTypeId);
-        if (id != contactDto.Id || contactType == null)
+        if (contactType == null)
         {
             return BadRequest();
         }
 
-        var contact = await _contactRepository.GetById(id);
+        var contact = _contactRepository.GetById(id);
         if (contact == null)
         {
             return NotFound();
@@ -84,16 +87,13 @@ public class ContactController : ControllerBase
         contact.TextComments = contactDto.TextComments;
         contact.ContactType = contactType;
 
-        contact.PersonContact = null;
-        contact.PrivateOrganizationContact = null;
-        contact.PublicOrganizationContact = null;
-
         ContactAdditionalFields.modifyAdditionalFields(contactType, contact, contactDto);
 
         try
         {
             _contactRepository.UpdateContact(contact);
-            return Ok(contactDto);
+            var new_contact = _contactRepository.GetById(contact.Id);
+            return Ok(ContactAdditionalFields.ItemToDTO(new_contact!));
         }
         catch (Exception ex)
         {
@@ -104,9 +104,10 @@ public class ContactController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public IActionResult Delete(int id)
     {
-        var contact = await _contactRepository.GetById(id);
+        var contact = _contactRepository.GetById(id);
+        Console.WriteLine($"Delete contact: {id}");
         if (contact == null)
         {
             return NotFound();

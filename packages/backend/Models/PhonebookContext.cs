@@ -37,6 +37,9 @@ public partial class PhonebookContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ContactTypeId).HasColumnName("contact_type_id");
+            entity.Property(e => e.Deleted)
+                .HasDefaultValue(false)
+                .HasColumnName("deleted");
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("name");
@@ -47,7 +50,7 @@ public partial class PhonebookContext : DbContext
 
             entity.HasOne(d => d.ContactType).WithMany(p => p.Contacts)
                 .HasForeignKey(d => d.ContactTypeId)
-                .OnDelete(DeleteBehavior.Cascade)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("contact_contact_type_id_fkey");
         });
 
@@ -82,7 +85,7 @@ public partial class PhonebookContext : DbContext
 
             entity.HasOne(d => d.Contact).WithOne(p => p.PersonContact)
                 .HasForeignKey<PersonContact>(d => d.ContactId)
-                .OnDelete(DeleteBehavior.Cascade)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("person_contact_contact_id_fkey");
         });
 
@@ -105,7 +108,7 @@ public partial class PhonebookContext : DbContext
 
             entity.HasOne(d => d.Contact).WithOne(p => p.PrivateOrganizationContact)
                 .HasForeignKey<PrivateOrganizationContact>(d => d.ContactId)
-                .OnDelete(DeleteBehavior.Cascade)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("private_organization_contact_contact_id_fkey");
         });
 
@@ -128,7 +131,7 @@ public partial class PhonebookContext : DbContext
 
             entity.HasOne(d => d.Contact).WithOne(p => p.PublicOrganizationContact)
                 .HasForeignKey<PublicOrganizationContact>(d => d.ContactId)
-                .OnDelete(DeleteBehavior.Cascade)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("public_organization_contact_contact_id_fkey");
         });
 

@@ -14,14 +14,22 @@ public class BaseRepository : IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
-        if (!_disposed)
+        try
         {
-            if (disposing)
+            if (!_disposed)
             {
-                _context.Dispose();
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
             }
+            this._disposed = true;
+
+        } catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            this._disposed = false;
         }
-        this._disposed = true;
     }
 
     public void Dispose()
@@ -32,6 +40,13 @@ public class BaseRepository : IDisposable
 
     public async void Save()
     {
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.SaveChangesAsync();
+
+        } catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
     }
 }

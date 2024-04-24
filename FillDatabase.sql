@@ -9,6 +9,7 @@ CREATE TABLE contact (
     phone_number VARCHAR(15) NOT NULL,
     text_comments TEXT,
     contact_type_id INT NOT NULL,
+    deleted BOOLEAN DEFAULT false,
     FOREIGN KEY (contact_type_id) REFERENCES contact_type(id)
 );
 
