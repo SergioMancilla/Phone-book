@@ -24,6 +24,7 @@ public class ContactController : ControllerBase
         _contactTypeRepository = contactTypeRepository;
     }
 
+    [EnableCors]
     [HttpGet("list")]
     public async Task<List<ContactDTO>> GetAll()
     {
@@ -31,6 +32,7 @@ public class ContactController : ControllerBase
         return contacts;
     }
 
+    [EnableCors]
     [HttpPost()]
     public async Task<ActionResult<ContactDTO>> Post(ContactDTO contactDto)
     {
@@ -66,6 +68,7 @@ public class ContactController : ControllerBase
 
     }
 
+    [EnableCors]
     [HttpPut("{id}")]
     public async Task<ActionResult<ContactDTO>> Put(int id, ContactDTO contactDto)
     {
@@ -103,6 +106,7 @@ public class ContactController : ControllerBase
 
     }
 
+    [EnableCors]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {

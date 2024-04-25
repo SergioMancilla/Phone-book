@@ -14,22 +14,22 @@ public class ContactAdditionalFields
             case (int)ContactTypeEnum.Person:
                 contact.PersonContact = new PersonContact
                 {
-                    Email = contactDto.AdditionalData?.Email ?? string.Empty,
-                    Relationship = contactDto.AdditionalData?.Relationship ?? string.Empty
+                    Email = contactDto.AdditionalData?.Email ?? null,
+                    Relationship = contactDto.AdditionalData?.Relationship ?? null
                 };
                 break;
             case (int)ContactTypeEnum.PublicOrganization:
                 contact.PublicOrganizationContact = new PublicOrganizationContact
                 {
-                    IndustrialSector = contactDto.AdditionalData?.IndustrialSector ?? string.Empty,
-                    WebpageUrl = contactDto.AdditionalData?.WebpageUrl ?? string.Empty,
+                    IndustrialSector = contactDto.AdditionalData?.IndustrialSector ?? null,
+                    WebpageUrl = contactDto.AdditionalData?.WebpageUrl ?? null,
                 };
                 break;
             case (int)ContactTypeEnum.PrivateOrganization:
                 contact.PrivateOrganizationContact = new PrivateOrganizationContact
                 {
-                    Fax = contactDto.AdditionalData?.Fax ?? string.Empty,
-                    OfficeAddress = contactDto.AdditionalData?.OfficeAddress ?? string.Empty,
+                    Fax = contactDto.AdditionalData?.Fax ?? null,
+                    OfficeAddress = contactDto.AdditionalData?.OfficeAddress ?? null,
                 };
                 break;
             default:

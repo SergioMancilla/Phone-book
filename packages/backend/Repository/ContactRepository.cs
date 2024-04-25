@@ -44,17 +44,17 @@ public class ContactRepository: BaseRepository, IContactRepository
 
     public void UpdateContact(Contact contact)
     {
-        var privateOrganizationContacts = _context.PrivateOrganizationContacts.Find(contact.Id);
-        var personContact = _context.PersonContacts.Find(contact.Id);
-        var publicOrganizationContacts = _context.PublicOrganizationContacts.Find(contact.Id);
+        var privateOrganizationContacts = _context.PrivateOrganizationContacts.FirstOrDefault(x => x.ContactId == contact.Id);
+        var personContact = _context.PersonContacts.FirstOrDefault(x => x.ContactId == contact.Id);
+        var publicOrganizationContacts = _context.PublicOrganizationContacts.FirstOrDefault(x => x.ContactId == contact.Id);
 
         if (personContact != null) _context.PersonContacts.Remove(personContact);
         if (privateOrganizationContacts != null) _context.PrivateOrganizationContacts.Remove(privateOrganizationContacts);
         if (publicOrganizationContacts != null) _context.PublicOrganizationContacts.Remove(publicOrganizationContacts);
 
+        _context.SaveChanges();
         _context.Entry(contact).State = EntityState.Modified;
-        Console.WriteLine(contact);
-        _context.Contacts.Update(contact);
+        //_context.Contacts.Update(contact);
         _context.SaveChanges();
     }
 
