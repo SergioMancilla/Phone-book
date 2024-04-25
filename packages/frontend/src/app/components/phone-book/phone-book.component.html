@@ -1,0 +1,55 @@
+<div class="container position-relative d-flex flex-column justify-content-center mt-5 w-100">
+  <section class="d-flex justify-content-center">
+    <h1 class="text-primary text-center">Contacts</h1>
+    <app-ngbd-modal [mode]="'create'" />
+  </section>
+	<table class="table table-striped border border-primary border-3 rounded">
+		<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">Phone</th>
+				<th scope="col">Comments</th>
+				<th scope="col">Type</th>
+				<th scope="col">Relationship</th>
+				<th scope="col">Email</th>
+				<th scope="col">Office address</th>
+				<th scope="col">FAX</th>
+				<th scope="col">Web page</th>
+				<th scope="col">Industrial sector</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+        @for (contact of contacts; track contact.id) {
+          <tr>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.name }}</th>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.phone_number }}</th>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.text_comments }}</th>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.contact_type_id }}</th>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.additional_data.relationship }}</th>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.additional_data.email }}</th>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.additional_data.office_address }}</th>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.additional_data.fax }}</th>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.additional_data.webpage_url }}</th>
+            <th class="fs-6 fw-normal" scope="row">{{ contact.additional_data.industrial_sector }}</th>
+            <th class="fs-6 fw-normal" scope="row">
+              <div class="d-flex gap-2">
+                <app-ngbd-modal [mode]="'edit'" [contact]="contact">
+                  <fa-icon [icon]="editIcon"></fa-icon>
+                  Edit
+                </app-ngbd-modal>
+                <button class="btn btn-danger" (click)="deleteContact(contact.id!)">
+                  <fa-icon [icon]="deleteIcon"></fa-icon>
+                  Delete
+                </button>
+              </div>
+            </th>
+          </tr>
+        } @empty {
+          <tr class="d-flex justify-content-center text-center">
+            There are no items to show
+          </tr>
+        }
+		</tbody>
+	</table>
+</div>

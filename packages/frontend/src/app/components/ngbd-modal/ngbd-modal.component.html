@@ -1,0 +1,7 @@
+@if (mode == 'create') {
+  <button class="btn btn-outline-primary" (click)="open()">Add</button>
+} @else {
+  <button class="btn btn-warning" (click)="open()">
+    <ng-content />
+  </button>
+}

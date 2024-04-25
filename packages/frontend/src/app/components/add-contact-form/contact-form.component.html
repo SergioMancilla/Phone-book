@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <h2 class="modal-title">{{ mode === 'edit'? 'Edit contact' : 'Create contact' }}</h2>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
+    <div class="d-flex flex-column gap-2">
+      <label for="name">Name</label>
+      <input #name [(ngModel)]="contactForm?.value.name" type="text" name="name" class="form-control" placeholder="Name" required>
+
+      <label for="phone">Phone</label>
+      <input #phone [(ngModel)]="contactForm?.value.phone" type="tel" name="phone_number" class="form-control" placeholder="Phone number" required>
+
+      <label for="comments">Comments</label>
+      <input #comments [(ngModel)]="contactForm?.value.text_comments" type="text" name="text_comments" class="form-control" placeholder="Come comment here...">
+
+      <label for="contactType">Contact type</label>
+      <select #contactType [(ngModel)]="contactForm?.value.contactType" name="contact_type_id" class="form-control" (change)="onContactTypeChange($event)" required>
+        <option [value]="null" disabled>Select</option>
+        <option [value]="ContactType.PERSON">Person</option>
+        <option [value]="ContactType.PUBLIC_ORGANIZATION">Public organization</option>
+        <option [value]="ContactType.PRIVATE_ORGANIZATION">Private organization</option>
+      </select>
+
+      <h3 class="h6">Additional fields</h3>
+      <div [ngSwitch]="selectedContactType" class="d-flex flex-column">
+        <ng-container *ngSwitchCase="ContactType.PERSON">
+          <label for="email">Email</label>
+          <input #email [(ngModel)]="contactForm?.value.email" type="email" name="email" placeholder="123456789" class="form-control">
+          <label for="relationship">Relationship</label>
+          <input #relationship [(ngModel)]="contactForm?.value.relationship" type="text" name="relationship" placeholder="Friend" class="form-control">
+        </ng-container>
+
+        <ng-container *ngSwitchCase="ContactType.PUBLIC_ORGANIZATION">
+          <label for="webpage">Webpage</label>
+          <input #webpage [(ngModel)]="contactForm?.value.webpage" type="url" name="webpage_url" placeholder="http://www.example.com" class="form-control">
+          <label for="industialSector">Industrial sector</label>
+          <input #industialSector [(ngModel)]="contactForm?.value.industialSector" type="text" name="industrial_sector" placeholder="Cattle raising" class="form-control">
+        </ng-container>
+
+        <ng-container *ngSwitchCase="ContactType.PRIVATE_ORGANIZATION">
+          <label for="address">Office address</label>
+          <input #address [(ngModel)]="contactForm?.value.address" type="text" name="office_address" placeholder="123456789" class="form-control">
+          <label for="fax">FAX</label>
+          <input #fax [(ngModel)]="contactForm?.value.fax" type="text" name="fax" placeholder="212345675" class="form-control">
+        </ng-container>
+      </div>
+    </div>
+    <div class="modal-footer mt-5">
+      <button type="button" class="btn btn-danger" (click)="activeModal.dismiss()">Cancel</button>
+      <button type="submit" class="btn btn-success">Send</button>
+    </div>
+  </form>
+
+</div>
