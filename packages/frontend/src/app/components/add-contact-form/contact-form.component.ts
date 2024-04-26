@@ -48,6 +48,9 @@ export class AddContactFormComponent {
   }
 
   onSubmit(form: NgForm) {
+    if (!form.valid) {
+      return
+    }
     const values = form.value;
 
     const contactDTO: ContactDTO = {

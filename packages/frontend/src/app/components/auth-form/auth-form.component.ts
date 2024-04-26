@@ -55,6 +55,9 @@ export class AuthFormComponent {
   }
 
   onSubmit(form: NgForm) {
+    if (!form.valid) {
+      return
+    }
     const values = form.value;
     
     if (this.mode === 'login') {
