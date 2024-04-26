@@ -12,9 +12,10 @@ import { AddContactFormComponent } from './components/add-contact-form/contact-f
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdModalComponent } from './components/ngbd-modal/ngbd-modal.component';
 import { AuthFormComponent } from './components/auth-form/auth-form.component';
+import { RouterOutlet } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
-import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
   declarations: [
@@ -23,9 +24,9 @@ import { HomeComponent } from './pages/home/home.component';
     AddContactFormComponent,
     NgbdModalComponent,
     AuthFormComponent,
+    HomeComponent,
     LoginComponent,
-    RegisterComponent,
-    HomeComponent
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -33,9 +34,17 @@ import { HomeComponent } from './pages/home/home.component';
     FontAwesomeModule,
     HttpClientModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    RouterOutlet
   ],
   providers: [],
+  exports: [
+    AppComponent,
+    PhoneBookComponent,
+    AddContactFormComponent,
+    NgbdModalComponent,
+    AuthFormComponent,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

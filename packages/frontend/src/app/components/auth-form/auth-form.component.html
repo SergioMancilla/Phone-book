@@ -20,6 +20,20 @@
         </button>
         
       </div>
+      <div class="d-flex gap-2">
+
+      </div>
+      @if (mode === 'login') {
+        <span>
+          Not registered yet?
+        </span>
+        <a routerLink="/register">Create  your account</a>
+      } @else {
+        <span>
+          Already have an account?
+        </span>
+        <a routerLink="/login">Login</a>
+      }
     </form>
   </div>
 </div>

@@ -1,8 +1,18 @@
-<div class="container position-relative d-flex flex-column justify-content-center mt-5 w-100">
+<div class="container position-relative d-flex flex-column justify-content-center align-items-center mt-5 w-100">
   <section class="d-flex justify-content-center">
     <h1 class="text-primary text-center">Contacts</h1>
     <app-ngbd-modal [mode]="'create'" />
   </section>
+  <div class="d-flex gap-3 p-2">
+    <label for="personCheck">Person</label>
+    <input #personCheck type="checkbox" checked>
+
+    <label for="personCheck">Public organization</label>
+    <input type="checkbox" checked>
+
+    <label for="personCheck">Private organization</label>
+    <input type="checkbox" checked>
+  </div>
 	<table class="table table-striped border border-primary border-3 rounded">
 		<thead>
 			<tr>
