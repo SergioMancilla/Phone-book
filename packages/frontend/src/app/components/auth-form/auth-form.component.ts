@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 
 import { ApiBaseUrl } from '@utils/config';
 
@@ -35,7 +35,7 @@ export class AuthFormComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
     const emailControl = new FormControl(this.email, [Validators.required, Validators.email])
@@ -76,11 +76,12 @@ export class AuthFormComponent {
     this.http.post(`${ApiBaseUrl}/auth/login`, loginDTO)
       .subscribe({
         next: (response) => {
-          // Redirect to main page
-          console.log(response)
+          if (response.status == 200) {
+            this.saveSessionInStorage();
+            this.router.navigate(['home']);
+          }
         },
         error: (e) => {
-          // Show error messages
           console.log("There was an error in the request: ", e)
         },
         complete: () => { }
@@ -91,14 +92,23 @@ export class AuthFormComponent {
     this.http.post(`${ApiBaseUrl}/auth/register`, registerDTO)
     .subscribe({
       next: (response) => {
-        console.log(response)
-        // Redirect to main page
+        if (response.status == 200) {
+          this.saveSessionInStorage();
+          this.router.navigate(['home']);
+        }
       },
       error: (e) => {
-        // Show error messages
         console.log("The was an error in the request: ", e)
       },
       complete: () => { }
     })
+  }
+
+  saveSessionInStorage() {
+    /* This is just to emulate a login, actually didn't implement some
+    like a token based system or JWT, and any person could alter
+    the login functionallity by opening the dev tools
+    */
+   localStorage.setItem('logged', '1');
   }
 }

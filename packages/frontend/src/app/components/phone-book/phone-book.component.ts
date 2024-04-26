@@ -5,7 +5,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { ApiBaseUrl } from '@utils/config';
-import type { ContactDTO } from '@interfaces/contact';
+import { ContactDTO, ContactType } from '@interfaces/contact';
 
 @Component({
   selector: 'app-phone-book',
@@ -18,14 +18,32 @@ export class PhoneBookComponent {
 
   contacts: ContactDTO[] = [];
 
+  fetchPersonContact: boolean = true;
+  fetchPublicContact: boolean = true;
+  fetchPrivateContact: boolean = true;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.fetchContacts();
   }
 
+  formatQueryFilterByType(): string {
+    if (!this.fetchPersonContact && !this.fetchPrivateContact && !this.fetchPublicContact ) {
+      return ""
+    }
+
+    let query = '?query='
+    if (this.fetchPersonContact) query += `_${ContactType.PERSON}`
+    if (this.fetchPrivateContact) query += `_${ContactType.PRIVATE_ORGANIZATION}`
+    if (this.fetchPublicContact) query += `_${ContactType.PUBLIC_ORGANIZATION}`
+
+    return query;
+  }
+
   fetchContacts(): void {
-    this.http.get<ContactDTO[]>(`${ApiBaseUrl}/contact`)
+    const query = this.formatQueryFilterByType();
+    this.http.get<ContactDTO[]>(`${ApiBaseUrl}/contact${query}`)
     .subscribe({
       next: (data: ContactDTO[]) => {console.log(data); this.contacts = data},
       error: (e) => console.log("The was an error in the request: ", e),
