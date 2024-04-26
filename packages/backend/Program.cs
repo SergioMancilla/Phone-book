@@ -31,6 +31,7 @@ builder.Services.AddDbContext<PhonebookContext>(options =>
 
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<IContactTypeRepository, ContactTypeRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

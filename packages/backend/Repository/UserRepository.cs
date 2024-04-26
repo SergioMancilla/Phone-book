@@ -10,8 +10,8 @@ public class UserRepository : BaseRepository, IUserRepository
     private readonly PasswordHashService _passwordHashService;
 
 
-    public UserRepository(PhonebookContext context, PasswordHashService passwordHashService) : base(context) {
-        _passwordHashService = passwordHashService;
+    public UserRepository(PhonebookContext context) : base(context) {
+        _passwordHashService = new PasswordHashService();
     }
 
     public User? GetByEmail(string email)
@@ -31,7 +31,6 @@ public class UserRepository : BaseRepository, IUserRepository
         {
             return false;
         }
-
         return true;
     }
 
@@ -39,10 +38,15 @@ public class UserRepository : BaseRepository, IUserRepository
     {
         var securePassword = _passwordHashService.HashPassword(password);
         var user = new User { Name = name, Email = email, Password = securePassword };
+
+        
+
         _context.Users.Add(user);
         _context.SaveChanges();
 
         return user;
     }
+
+
 
 }

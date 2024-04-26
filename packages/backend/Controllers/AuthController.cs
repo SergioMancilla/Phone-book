@@ -1,14 +1,14 @@
 ﻿using backend.DAL;
-using backend.Models;
 using backend.Models.DTO;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
 
-[ApiController]
 [Route("api/[controller]")]
-public class AuthController: ControllerBase
+[ApiController]
+public class AuthController : ControllerBase
 {
     private IUserRepository _userRepository;
 
@@ -17,60 +17,62 @@ public class AuthController: ControllerBase
         _userRepository = userRepository;
     }
 
-    [EnableCors]
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginDTO loginDTO)
+    public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
     {
-        var username = loginDTO.Email;
-        var password = loginDTO.Password;
-        if (username == null || password == null)
+        if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
-        var user = _userRepository.GetByEmail(loginDTO.Email);
+        var username = loginDTO.Email;
+        var password = loginDTO.Password;
+
+        var user = _userRepository.GetByEmail(username);
 
         if (user == null)
         {
-            return NotFound();
+            return NotFound("User not found");
         }
 
-        var loggedUser = await _userRepository.Login(username, password);
+        var isAuthenticated = await _userRepository.Login(username, password);
 
-        if (!loggedUser)
+        if (!isAuthenticated)
         {
-            return Unauthorized();
+            return Unauthorized("Incorrect credentials.");
         }
 
         return Ok();
     }
 
-    [EnableCors]
     [HttpPost("register")]
-    public Task<UserDTO?> Register(RegisterDTO registerDTO)
+    public IActionResult Register([FromBody]  RegisterDTO registerDTO)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var username = registerDTO.Email;
         var password = registerDTO.Password;
         var name = registerDTO.Name;
-
-        if (username == null || password == null || name == null)
-        {
-            return null;
-        }
 
         var user = _userRepository.GetByEmail(registerDTO.Email);
 
         if (user != null)
         {
-            return null;
+            return Conflict("The username is already registered.");
         }
 
         var newUser = _userRepository.Register(name, username, password);
 
-        return new UserDTO
+        if (newUser == null)
         {
-            Name = newUser.Name,
-            Email = newUser.Email,
-        };
+            return StatusCode(500, "There was a problem registering the user.");
+        }
+
+        var userDTO = new UserDTO { Name = newUser.Name, Email = newUser.Email };
+
+        return Ok(userDTO);
     }
 }

@@ -24,15 +24,13 @@ public class ContactController : ControllerBase
         _contactTypeRepository = contactTypeRepository;
     }
 
-    [EnableCors]
-    [HttpGet("list")]
+    [HttpGet()]
     public async Task<List<ContactDTO>> GetAll()
     {
         var contacts = await _contactRepository.GetAll();
         return contacts;
     }
 
-    [EnableCors]
     [HttpPost()]
     public async Task<ActionResult<ContactDTO>> Post(ContactDTO contactDto)
     {
@@ -68,7 +66,6 @@ public class ContactController : ControllerBase
 
     }
 
-    [EnableCors]
     [HttpPut("{id}")]
     public async Task<ActionResult<ContactDTO>> Put(int id, ContactDTO contactDto)
     {
@@ -106,7 +103,6 @@ public class ContactController : ControllerBase
 
     }
 
-    [EnableCors]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
