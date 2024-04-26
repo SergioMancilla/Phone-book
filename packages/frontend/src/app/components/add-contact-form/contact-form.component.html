@@ -45,6 +45,9 @@
           <label for="fax">FAX</label>
           <input #fax [(ngModel)]="contactForm?.value.fax" type="text" name="fax" placeholder="212345675" class="form-control">
         </ng-container>
+        @if (showFormError) {
+          <p class="text-danger">Please check your fields</p>
+        }
       </div>
     </div>
     <div class="modal-footer mt-5">

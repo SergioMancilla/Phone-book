@@ -22,6 +22,8 @@ export class AddContactFormComponent {
   ContactType = ContactType;
   contactForm: FormGroup | null = null;
 
+  showErrorForm: boolean = false;
+
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -49,6 +51,7 @@ export class AddContactFormComponent {
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
+      this.showErrorForm = true;
       return
     }
     const values = form.value;

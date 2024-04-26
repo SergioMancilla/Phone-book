@@ -35,6 +35,8 @@ export class AuthFormComponent {
   email: string = '';
   password: string = '';
 
+  showFormError: boolean = false;
+
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
@@ -56,6 +58,7 @@ export class AuthFormComponent {
 
   onSubmit(form: NgForm) {
     if (!form.valid) {
+      this.showFormError = true; 
       return
     }
     const values = form.value;
