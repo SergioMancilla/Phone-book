@@ -41,6 +41,11 @@ public class ContactController : ControllerBase
     [HttpPost()]
     public async Task<ActionResult<ContactDTO>> Post(ContactDTO contactDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var contactType = await _contactTypeRepository.GetById(contactDto.ContactTypeId);
 
         if (contactType == null)
@@ -52,7 +57,7 @@ public class ContactController : ControllerBase
         {
             Name = contactDto.Name,
             PhoneNumber = contactDto.PhoneNumber,
-            ContactType = contactType,
+            ContactType = contactType,  
             ContactTypeId = contactDto.ContactTypeId,
             TextComments = contactDto.TextComments,
         };
@@ -76,6 +81,11 @@ public class ContactController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<ContactDTO>> Put(int id, ContactDTO contactDto)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         contactDto.Id = id;
         var contactType = await _contactTypeRepository.GetById(contactDto.ContactTypeId);
         if (contactType == null)
