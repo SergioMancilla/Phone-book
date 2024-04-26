@@ -25,7 +25,7 @@ export class PhoneBookComponent {
   }
 
   fetchContacts(): void {
-    this.http.get<ContactDTO[]>(`${ApiBaseUrl}/contact/list`)
+    this.http.get<ContactDTO[]>(`${ApiBaseUrl}/contact`)
     .subscribe({
       next: (data: ContactDTO[]) => {console.log(data); this.contacts = data},
       error: (e) => console.log("The was an error in the request: ", e),

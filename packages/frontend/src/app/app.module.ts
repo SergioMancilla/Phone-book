@@ -11,13 +11,21 @@ import { PhoneBookComponent } from '@components/phone-book/phone-book.component'
 import { AddContactFormComponent } from './components/add-contact-form/contact-form.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbdModalComponent } from './components/ngbd-modal/ngbd-modal.component';
+import { AuthFormComponent } from './components/auth-form/auth-form.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { HomeComponent } from './pages/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PhoneBookComponent,
     AddContactFormComponent,
-    NgbdModalComponent
+    NgbdModalComponent,
+    AuthFormComponent,
+    LoginComponent,
+    RegisterComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

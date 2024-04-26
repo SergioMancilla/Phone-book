@@ -27,7 +27,7 @@
       <div [ngSwitch]="selectedContactType" class="d-flex flex-column">
         <ng-container *ngSwitchCase="ContactType.PERSON">
           <label for="email">Email</label>
-          <input #email [(ngModel)]="contactForm?.value.email" type="email" name="email" placeholder="123456789" class="form-control">
+          <input #email [(ngModel)]="contactForm?.value.email" type="email" name="email" placeholder="example@email.com" class="form-control">
           <label for="relationship">Relationship</label>
           <input #relationship [(ngModel)]="contactForm?.value.relationship" type="text" name="relationship" placeholder="Friend" class="form-control">
         </ng-container>

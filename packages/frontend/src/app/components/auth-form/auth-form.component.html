@@ -1,0 +1,25 @@
+<div class="container row d-flex justify-content-center m-auto">
+  <div class="col-6">
+    <h1>{{ mode === 'login'? 'Login' : 'Register' }}</h1>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
+      <div class="d-flex flex-column gap-2">
+  
+        @if (mode === 'register') {
+          <label for="name">Name</label>
+          <input #name [(ngModel)]="authForm?.value.name" type="text" name="name" class="form-control" placeholder="Pablo Cuentas" required>
+        }
+  
+        <label for="name">Email</label>
+        <input #email [(ngModel)]="authForm?.value.email" type="email" name="email" class="form-control" placeholder="example@email.com" required>
+  
+        <label for="phone">Password</label>
+        <input #phone [(ngModel)]="authForm?.value.password" type="password" name="phone_number" class="form-control" placeholder="********" required>
+  
+        <button type="submit" class="btn btn-success">
+          {{ mode === 'login'? 'Login' : 'Register' }}
+        </button>
+        
+      </div>
+    </form>
+  </div>
+</div>
