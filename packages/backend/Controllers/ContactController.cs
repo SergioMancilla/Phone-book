@@ -25,10 +25,17 @@ public class ContactController : ControllerBase
     }
 
     [HttpGet()]
-    public async Task<List<ContactDTO>> GetAll()
+    public async Task<List<ContactDTO>> GetAll(string? filter = null)
     {
-        var contacts = await _contactRepository.GetAll();
-        return contacts;
+
+        if (!string.IsNullOrEmpty(filter))
+        {
+            var filterTypes = filter.Split('_').Select(int.Parse).ToList();
+            return await _contactRepository.GetByTypes(filterTypes);
+        } else
+        {
+            return await _contactRepository.GetAll();
+        }
     }
 
     [HttpPost()]

@@ -31,6 +31,19 @@ public class ContactRepository: BaseRepository, IContactRepository
         return contacts;
     }
 
+    public async Task<List<ContactDTO>> GetByTypes(List<int> typeIds)
+    {
+        List<ContactDTO> contacts = await _context.Contacts
+            .Where(x => !x.Deleted && typeIds.Contains(x.ContactTypeId))
+            .Include(x => x.ContactType)
+            .Include(x => x.PersonContact)
+            .Include(x => x.PublicOrganizationContact)
+            .Include(x => x.PrivateOrganizationContact)
+            .Select(x => ContactAdditionalFields.ItemToDTO(x))
+            .ToListAsync();
+        return contacts;
+    }
+
     public Contact? GetById(int id)
     {
         return _context.Contacts.Find(id);

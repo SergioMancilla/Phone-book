@@ -9,6 +9,7 @@ namespace backend.DAL;
 public interface IContactRepository : IDisposable
 {
     Task<List<ContactDTO>> GetAll();
+    Task<List<ContactDTO>> GetByTypes(List<int> typeIds);
     Contact? GetById(int id);
     void InsertContact(Contact contact);
     void UpdateContact(Contact contact);
